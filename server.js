@@ -4,8 +4,9 @@ const mongoose = require('mongoose')
 const cors = require('cors')
 
 // require route files
-const exampleRoutes = require('./app/routes/example_routes')
+const chatRoutes = require('./app/routes/chat_routes')
 const userRoutes = require('./app/routes/user_routes')
+const profileRoutes = require('./app/routes/profile_routes')
 
 // require middleware
 const errorHandler = require('./lib/error_handler')
@@ -34,10 +35,32 @@ mongoose.connect(db, {
 
 // instantiate express application object
 const app = express()
+const http = require('http')
 
+const server = http.createServer(app)
+const { Server } = require('socket.io')
+
+const io = new Server(server)
+
+io.on('connection', (socket) => {
+  socket.on('chat message', (msg) => {
+    console.log('message: ' + msg)
+  })
+})
+
+io.on('connection', (socket) => {
+  console.log('a user connected')
+  socket.on('disconnect', () => {
+    console.log('user disconnected')
+  })
+})
 // set CORS headers on response from this API using the `cors` NPM package
 // `CLIENT_ORIGIN` is an environment variable that will be set on Heroku
-app.use(cors({ origin: process.env.CLIENT_ORIGIN || `http://localhost:${clientDevPort}` }))
+app.use(
+  cors({
+    origin: process.env.CLIENT_ORIGIN || `http://localhost:${clientDevPort}`
+  })
+)
 
 // define port for API to run on
 const port = process.env.PORT || serverDevPort
@@ -56,9 +79,9 @@ app.use(express.urlencoded({ extended: true }))
 app.use(requestLogger)
 
 // register route files
-app.use(exampleRoutes)
+app.use(chatRoutes)
 app.use(userRoutes)
-
+app.use(profileRoutes)
 // register error handling middleware
 // note that this comes after the route middlewares, because it needs to be
 // passed any error messages from them

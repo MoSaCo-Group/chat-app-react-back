@@ -1,4 +1,6 @@
 #!/bin/bash
+# EMAIL="aee@a.com"
+# PASSWORD="add"
 
 API="http://localhost:4741"
 URL_PATH="/sign-in"
