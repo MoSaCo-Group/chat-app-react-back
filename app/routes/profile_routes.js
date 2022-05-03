@@ -45,4 +45,11 @@ router.delete('/profile/:id', requireToken, (req, res, next) => {
     .catch(next)
 })
 
+router.get('/profile/:id', requireToken, (req, res, next) => {
+  Profile.findById(req.params.id)
+    .then(handle404)
+    .then(profile => res.status(200).json({ profile: profile.toObject() }))
+    .catch(next)
+})
+
 module.exports = router
