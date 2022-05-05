@@ -40,6 +40,7 @@ const socket = io.connect({ transports: ['websocket'] })
 const server = http.createServer(app)
 const { Server } = require('socket.io')
 
+<<<<<<< HEAD
 const io = require('socket.io')(server, {
 	cors: {
 		origin: 'https:/localhost:4741/',
@@ -47,12 +48,18 @@ const io = require('socket.io')(server, {
 })
 
 io.on('chat', (socket) => {
+=======
+const io = new Server(server)
+
+io.on('connection', (socket) => {
+>>>>>>> a591381 (fixed socket.io)
   console.log('a user connected')
   socket.on('disconnect', () => {
     console.log('user disconnected')
   })
 })
 
+<<<<<<< HEAD
 io.on('connection', (socket) => {
 	console.log('a user connected')
 	socket.on('disconnect', () => {
@@ -60,6 +67,8 @@ io.on('connection', (socket) => {
 	})
 })
 
+=======
+>>>>>>> a591381 (fixed socket.io)
 // set CORS headers on response from this API using the `cors` NPM package
 // `CLIENT_ORIGIN` is an environment variable that will be set on Heroku
 app.use(
