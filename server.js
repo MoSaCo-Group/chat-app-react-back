@@ -39,10 +39,17 @@ const http = require('http')
 const server = http.createServer(app)
 const { Server } = require('socket.io')
 
-const io = require('socket.io')(server, {
+const io = require(Server)(server, {
   cors: {
     origin: 'https:/localhost:4741/'
   }
+})
+
+io.on('chat', (socket) => {
+  console.log('a user connected')
+  socket.on('disconnect', () => {
+    console.log('user disconnected')
+  })
 })
 
 io.on('connection', (socket) => {
