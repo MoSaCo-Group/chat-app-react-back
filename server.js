@@ -45,13 +45,6 @@ const io = require(Server)(server, {
   }
 })
 
-io.on('chat', (socket) => {
-  console.log('a user connected')
-  socket.on('disconnect', () => {
-    console.log('user disconnected')
-  })
-})
-
 io.on('connection', (socket) => {
   console.log('a user connected')
   socket.on('disconnect', () => {
