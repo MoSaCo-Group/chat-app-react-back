@@ -35,22 +35,22 @@ mongoose.connect(db, {
 
 // instantiate express application object
 const app = express()
-const http = require('http')
-const server = http.createServer(app)
-const { Server } = require('socket.io')
+// const http = require('http')
+// const server = http.createServer(app)
+// const { Server } = require('socket.io')
 
-const io = require(Server)(server, {
-  cors: {
-    origin: 'https:/localhost:4741/'
-  }
-})
+// const io = require(Server)(server, {
+//   cors: {
+//     origin: 'https:/localhost:4741/'
+//   }
+// })
 
-io.on('connection', (socket) => {
-  console.log('a user connected')
-  socket.on('disconnect', () => {
-    console.log('user disconnected')
-  })
-})
+// io.on('connection', (socket) => {
+//   console.log('a user connected')
+//   socket.on('disconnect', () => {
+//     console.log('user disconnected')
+//   })
+// })
 // set CORS headers on response from this API using the `cors` NPM package
 // `CLIENT_ORIGIN` is an environment variable that will be set on Heroku
 app.use(
