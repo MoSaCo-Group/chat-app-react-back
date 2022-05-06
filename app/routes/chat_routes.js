@@ -4,7 +4,7 @@ const Chat = require('../models/chat')
 const requireToken = passport.authenticate('bearer', { session: false })
 const router = express.Router()
 
-router.get('/chat', requireToken, (req, res, next) => {
+router.get('/Chat', requireToken, (req, res, next) => {
   Chat.find()
     .then(chat => {
       return chat.map(chat => chat.toObject())
@@ -13,8 +13,9 @@ router.get('/chat', requireToken, (req, res, next) => {
     .catch(next)
 })
 
-router.post('/chat', requireToken, (req, res, next) => {
+router.post('/Chat', requireToken, (req, res, next) => {
   req.body.chat.owner = req.user.id
+  console.log(req.body.chat)
   Chat.create(req.body.chat)
     .then(chat => {
       res.status(201).json({ chat: chat.toObject() })

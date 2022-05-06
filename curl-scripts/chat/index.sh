@@ -1,5 +1,6 @@
 #!/bin/sh
-# TOKEN="a4399f70f0420dc600cc071aad33e2af"
+TOKEN="39711a005019782111766a551ec9688a"
+
 API="http://localhost:4741"
 URL_PATH="/chat"
 

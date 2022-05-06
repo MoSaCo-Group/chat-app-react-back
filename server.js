@@ -36,14 +36,13 @@ mongoose.connect(db, {
 // instantiate express application object
 const app = express()
 const http = require('http')
-const socket = io.connect({ transports: ['websocket'] })
 const server = http.createServer(app)
 const { Server } = require('socket.io')
 
 const io = require('socket.io')(server, {
-	cors: {
-		origin: 'https:/localhost:4741/',
-	},
+  cors: {
+    origin: 'https:/localhost:4741/'
+  }
 })
 
 io.on('chat', (socket) => {
@@ -54,10 +53,10 @@ io.on('chat', (socket) => {
 })
 
 io.on('connection', (socket) => {
-	console.log('a user connected')
-	socket.on('disconnect', () => {
-		console.log('user disconnected')
-	})
+  console.log('a user connected')
+  socket.on('disconnect', () => {
+    console.log('user disconnected')
+  })
 })
 
 // set CORS headers on response from this API using the `cors` NPM package
