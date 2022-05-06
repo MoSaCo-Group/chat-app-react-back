@@ -1,10 +1,9 @@
 #!/bin/bash
-# NAME="Colin"
-# MESSAGE="THIS IS MY CHAT APP"
-# TOKEN="a4399f70f0420dc600cc071aad33e2af"
+BODY="THIS IS MY CHAT APP"
+TOKEN="827fdac5de8b817e88dd567bec02daf9"
 
 API="http://localhost:4741"
-URL_PATH="/chat"
+URL_PATH="/Chat"
 
 curl "${API}${URL_PATH}" \
   --include \
@@ -13,8 +12,7 @@ curl "${API}${URL_PATH}" \
   --header "Authorization: Bearer ${TOKEN}" \
   --data '{
     "chat": {
-      "name": "'"${NAME}"'",
-      "message": "'"${MESSAGE}"'"
+      "body": "'"${BODY}}"'"
     }
   }'
 
