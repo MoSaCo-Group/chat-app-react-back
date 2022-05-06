@@ -51,7 +51,6 @@ io.on('connection', (socket) => {
     console.log('user disconnected')
   })
 })
-
 // set CORS headers on response from this API using the `cors` NPM package
 // `CLIENT_ORIGIN` is an environment variable that will be set on Heroku
 app.use(
