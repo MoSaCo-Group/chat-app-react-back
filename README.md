@@ -77,6 +77,8 @@ A Chat app that allows you to easily connect and chat with others in a chat room
 
 ### [Link to Front End Repo](https://github.com/MoSaCo-Group/chat-app-react-front)
 ### Links to Deployed Sites:
+- [Link to the API Deployed](https://sleepy-river-31745.herokuapp.com/)
+- [Link to the Client Deployed](https://mosaco-group.github.io/chat-app-react-front/)
 
 ## The Team: MoSaCo Group
 -  <a href="https://github.com/ms00l" target="_blank">Moe Suleiman</a>
