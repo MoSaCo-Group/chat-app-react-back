@@ -35,22 +35,35 @@ mongoose.connect(db, {
 
 // instantiate express application object
 const app = express()
-// const http = require('http')
-// const server = http.createServer(app)
-// const { Server } = require('socket.io')
+const http = require('http')
+const server = http.createServer(app)
+const { Server } = require('socket.io')
 
-// const io = require(Server)(server, {
-//   cors: {
-//     origin: 'https:/localhost:4741/'
-//   }
-// })
+const io = new (Server)(server, {
+  cors: {
+    origin: 'https:/localhost:4741/'
+  }})
 
-// io.on('connection', (socket) => {
-//   console.log('a user connected')
-//   socket.on('disconnect', () => {
-//     console.log('user disconnected')
-//   })
-// })
+// const path = require('path')
+// app.use(express.static(path.join('http://localhost:7165/Chat')))
+
+// connection is on
+io.on('connection', (socket) => {
+  console.log('some client connected')
+  // server receives the message from client
+  socket.on('chat message', (msg) => {
+    console.log('Message from Client: ', msg)
+    // sending message to everyone, including the sender
+    io.emit('chat message', msg)
+  })
+})
+
+io.on('connection', (socket) => {
+  console.log('a user connected')
+  socket.on('disconnect', () => {
+    console.log('user disconnected')
+  })
+})
 // set CORS headers on response from this API using the `cors` NPM package
 // `CLIENT_ORIGIN` is an environment variable that will be set on Heroku
 app.use(
@@ -80,12 +93,12 @@ app.use(chatRoutes)
 app.use(userRoutes)
 app.use(profileRoutes)
 // register error handling middleware
-// note that this comes after the route middlewares, because it needs to be
+// note that this comes after the route middleware, because it needs to be
 // passed any error messages from them
 app.use(errorHandler)
 
 // run API on designated port (4741 in this case)
-app.listen(port, () => {
+server.listen(port, () => {
   console.log('listening on port ' + port)
 })
 
