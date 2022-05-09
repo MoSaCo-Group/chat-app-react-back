@@ -43,13 +43,18 @@ const io = new (Server)(server, {
   cors: {
     origin: 'https:/localhost:4741/'
   }})
-
+// define port for API to run on
+const port = process.env.PORT || serverDevPort
 // const path = require('path')
 // app.use(express.static(path.join('http://localhost:7165/Chat')))
-
+// run API on designated port (4741 in this case)
+server.listen(port, () => {
+  console.log('listening on port ' + port)
+})
 // connection is on
 io.on('connection', (socket) => {
   console.log('some client connected')
+  socket.emit('connection', null)
   // server receives the message from client
   socket.on('chat message', (msg) => {
     console.log('Message from Client: ', msg)
@@ -72,8 +77,7 @@ app.use(
   })
 )
 
-// define port for API to run on
-const port = process.env.PORT || serverDevPort
+
 
 // register passport authentication middleware
 app.use(auth)
@@ -97,10 +101,7 @@ app.use(profileRoutes)
 // passed any error messages from them
 app.use(errorHandler)
 
-// run API on designated port (4741 in this case)
-server.listen(port, () => {
-  console.log('listening on port ' + port)
-})
+
 
 // needed for testing
 module.exports = app
