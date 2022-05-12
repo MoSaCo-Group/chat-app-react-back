@@ -37,38 +37,50 @@ mongoose.connect(db, {
 const app = express()
 const http = require('http')
 const server = http.createServer(app)
-const { Server } = require('socket.io')
+const socketIo = require('socket.io')
 
-const io = new (Server)(server, {
+// server is allowing requests from client
+const io = socketIo(server, {
   cors: {
-    origin: 'https:/localhost:4741/'
-  }})
-// define port for API to run on
-const port = process.env.PORT || serverDevPort
-// const path = require('path')
-// app.use(express.static(path.join('http://localhost:7165/Chat')))
-// run API on designated port (4741 in this case)
-server.listen(port, () => {
-  console.log('listening on port ' + port)
-})
-// connection is on
-io.on('connection', (socket) => {
-  console.log('some client connected')
-  socket.emit('connection', null)
-  // server receives the message from client
-  socket.on('chat message', (msg) => {
-    console.log('Message from Client: ', msg)
-    // sending message to everyone, including the sender
-    io.emit('chat message', msg)
-  })
+    origin: 'http://localhost:7165'
+  }
 })
 
+app.use((req, res, next) => {
+  req.io = io
+  next()
+})
+
+// on connecting
 io.on('connection', (socket) => {
   console.log('a user connected')
-  socket.on('disconnect', () => {
-    console.log('user disconnected')
-  })
+  // sending message to everyone, including the sender
+  io.emit('chat message', null)
 })
+// socket.on('disconnect', () => {
+//   console.log('user disconnected')
+
+// const socket = io()
+// Log events here
+// connection is on
+// io.on('connection', (socket) => {
+//   console.log('some client connected: ', socket.id)
+//   // server receives the message from client
+//   socket.on('chat message', (msg) => {
+//     console.log('Message from Client: ', msg)
+
+// sending message to everyone, including the sender
+//     io.emit('chat message', msg)
+//   })
+// })
+// server receives the message from client
+// socket.on('chat message', (msg) => {
+//   console.log('Message from Client: ', msg)
+//   socket.emit('connection', null)
+//
+//   io.emit('chat message', msg)
+// })
+
 // set CORS headers on response from this API using the `cors` NPM package
 // `CLIENT_ORIGIN` is an environment variable that will be set on Heroku
 app.use(
@@ -77,8 +89,8 @@ app.use(
   })
 )
 
-
-
+// define port for API to run on
+const port = process.env.PORT || serverDevPort
 // register passport authentication middleware
 app.use(auth)
 
@@ -101,7 +113,10 @@ app.use(profileRoutes)
 // passed any error messages from them
 app.use(errorHandler)
 
-
+// run API on designated port (4741 in this case)
+server.listen(port, () => {
+  console.log('listening on port ' + port)
+})
 
 // needed for testing
 module.exports = app
