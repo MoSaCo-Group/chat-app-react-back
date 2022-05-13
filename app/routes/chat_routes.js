@@ -7,7 +7,8 @@ const router = express.Router()
 router.get('/Chat', requireToken, (req, res, next) => {
   Chat.find()
     .then(chat => {
-      return chat.map(chat => chat.toObject())
+      req.io.emit(chat.map(chat => chat.toObject()))
+      return chat
     })
     .then(chat => res.status(200).json({ chat: chat }))
     .catch(next)
