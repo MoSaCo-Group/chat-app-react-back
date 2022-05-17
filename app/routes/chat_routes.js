@@ -7,7 +7,8 @@ const router = express.Router()
 router.get('/Chat', requireToken, (req, res, next) => {
   Chat.find()
     .then(chat => {
-      return chat.map(chat => chat.toObject())
+      req.io.emit(chat.map(chat => chat.toObject()))
+      return chat
     })
     .then(chat => res.status(200).json({ chat: chat }))
     .catch(next)
@@ -18,6 +19,8 @@ router.post('/Chat', requireToken, (req, res, next) => {
   console.log(req.body.chat)
   Chat.create(req.body.chat)
     .then(chat => {
+      req.io.emit('chat message', { chat: chat.toObject() })
+      console.log('emitting from server')
       res.status(201).json({ chat: chat.toObject() })
     })
     .catch(next)

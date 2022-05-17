@@ -35,22 +35,58 @@ mongoose.connect(db, {
 
 // instantiate express application object
 const app = express()
-// const http = require('http')
-// const server = http.createServer(app)
-// const { Server } = require('socket.io')
+const http = require('http')
+const server = http.createServer(app)
+const socketIo = require('socket.io')
 
-// const io = require(Server)(server, {
-//   cors: {
-//     origin: 'https:/localhost:4741/'
-//   }
-// })
+// server is allowing requests from client
+const io = socketIo(server, {
+  cors: {
+    origin: 'http://localhost:7165'
+  }
+})
 
+app.use((req, res, next) => {
+  req.io = io
+  next()
+})
+
+// on connecting
+io.on('connection', (socket) => {
+  console.log('a user connected')
+  // sending message to everyone, including the sender
+  io.emit('chat message', 'Hello there')
+
+  socket.on('send message', (data) => {
+    console.log(data)
+    socket.emit('receive message', data)
+  })
+})
+
+// socket.on('disconnect', () => {
+//   console.log('user disconnected')
+
+// const socket = io()
+// Log events here
+// connection is on
 // io.on('connection', (socket) => {
-//   console.log('a user connected')
-//   socket.on('disconnect', () => {
-//     console.log('user disconnected')
+//   console.log('some client connected: ', socket.id)
+//   // server receives the message from client
+//   socket.on('chat message', (msg) => {
+//     console.log('Message from Client: ', msg)
+
+// sending message to everyone, including the sender
+//     io.emit('chat message', msg)
 //   })
 // })
+// server receives the message from client
+// socket.on('chat message', (msg) => {
+//   console.log('Message from Client: ', msg)
+//   socket.emit('connection', null)
+//
+//   io.emit('chat message', msg)
+// })
+
 // set CORS headers on response from this API using the `cors` NPM package
 // `CLIENT_ORIGIN` is an environment variable that will be set on Heroku
 app.use(
@@ -61,7 +97,6 @@ app.use(
 
 // define port for API to run on
 const port = process.env.PORT || serverDevPort
-
 // register passport authentication middleware
 app.use(auth)
 
@@ -80,12 +115,12 @@ app.use(chatRoutes)
 app.use(userRoutes)
 app.use(profileRoutes)
 // register error handling middleware
-// note that this comes after the route middlewares, because it needs to be
+// note that this comes after the route middleware, because it needs to be
 // passed any error messages from them
 app.use(errorHandler)
 
 // run API on designated port (4741 in this case)
-app.listen(port, () => {
+server.listen(port, () => {
   console.log('listening on port ' + port)
 })
 
