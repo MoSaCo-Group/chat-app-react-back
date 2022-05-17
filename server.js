@@ -55,8 +55,14 @@ app.use((req, res, next) => {
 io.on('connection', (socket) => {
   console.log('a user connected')
   // sending message to everyone, including the sender
-  io.emit('chat message', null)
+  io.emit('chat message', 'Hello there')
+
+  socket.on('send message', (data) => {
+    console.log(data)
+    socket.emit('receive message', data)
+  })
 })
+
 // socket.on('disconnect', () => {
 //   console.log('user disconnected')
 
