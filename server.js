@@ -42,7 +42,7 @@ const socketIo = require('socket.io')
 // server is allowing requests from client
 const io = socketIo(server, {
   cors: {
-    origin: 'http://localhost:4741',
+    origin: 'https://mosaco-group.github.io',
     methods: ['GET', 'POST']
   }
 })
