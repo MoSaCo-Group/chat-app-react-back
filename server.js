@@ -42,7 +42,7 @@ const socketIo = require('socket.io')
 // server is allowing requests from client
 const io = socketIo(server, {
   cors: {
-    origin: 'https://mosaco-group.github.io/chat-app-react-front/'
+    origin: 'http://localhost:4741'
   }
 })
 
