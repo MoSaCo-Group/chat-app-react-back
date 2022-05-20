@@ -53,17 +53,14 @@ app.use((req, res, next) => {
 
 // on connecting
 io.on('connection', (socket) => {
-  console.log('a user connected')
-  // sending message to everyone, including the sender
-  // io.emit('chat message', 'Hello there')
-
+  // socket is listening for 'client message'
   socket.on('client message', (data) => {
-    console.log('client message: ', data)
+    // sending message to everyone, including the sender
     socket.broadcast.emit('server message', data)
     socket.emit('server message', data)
-
-    // socket.on('disconnect', () => {
-    //   console.log('user disconnected')
+    // disconnecting from Socket
+    socket.on('disconnect', () => {
+    })
   })
 })
 
@@ -101,7 +98,6 @@ app.use(errorHandler)
 
 // run API on designated port (4741 in this case)
 server.listen(port, () => {
-  console.log('listening on port ' + port)
 })
 
 // needed for testing

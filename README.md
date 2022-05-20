@@ -72,7 +72,7 @@ A Chat app that allows you to easily connect and chat with others in a chat room
   
 ### Opportunities for Future Iterations
 - Sending private messages
-- Sending images via messages
+- Creating Chat rooms
 
 
 ### [Link to Front End Repo](https://github.com/MoSaCo-Group/chat-app-react-front)
